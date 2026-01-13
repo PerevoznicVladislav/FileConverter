@@ -1,0 +1,79 @@
+﻿@model IEnumerable<FileConverter.MVC.Models.Plans.PlanModel>
+
+@{
+    ViewData["Title"] = "Plans";
+}
+
+<h2 class="mb-3">Plans</h2>
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">+ Create New Plan</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No plans found.</div>
+}
+else
+{
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th class="text-end">Monthly price</th>
+                <th class="text-center">Max conversions / month</th>
+                <th class="text-center">Max upload (bytes)</th>
+                <th class="text-center">Active</th>
+                <th class="text-center" style="width: 180px;">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var plan in Model)
+            {
+                <tr>
+                    <td>@plan.Name</td>
+                    <td>@plan.Description</td>
+                    <td class="text-end">@plan.MonthlyPrice</td>
+                    <td class="text-center">@plan.MaxConversionPerMonth</td>
+                    <td class="text-center">@plan.MaxUploadBytes</td>
+
+                    <td class="text-center">
+                        @if (plan.IsActive)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                        }
+                    </td>
+
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a asp-action="Details" asp-route-id="@plan.PlanId" class="btn btn-outline-secondary">
+                                Details
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@plan.PlanId" class="btn btn-outline-primary">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@plan.PlanId" class="btn btn-outline-danger">
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

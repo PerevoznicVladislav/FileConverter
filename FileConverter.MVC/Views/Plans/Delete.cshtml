@@ -1,0 +1,49 @@
+﻿@model FileConverter.MVC.Models.Plans.PlanModel
+
+@{
+    ViewData["Title"] = "Delete Plan";
+}
+
+<h2>Delete Plan</h2>
+
+<h4>Are you sure you want to delete this plan?</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+
+    <dt class="col-sm-3">Monthly Price</dt>
+    <dd class="col-sm-9">@Model.MonthlyPrice</dd>
+
+    <dt class="col-sm-3">Max Conversions / Month</dt>
+    <dd class="col-sm-9">@Model.MaxConversionPerMonth</dd>
+
+    <dt class="col-sm-3">Max Upload (bytes)</dt>
+    <dd class="col-sm-9">@Model.MaxUploadBytes</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@Model.IsActive</dd>
+</dl>
+
+@if (ViewBag.CanDelete != null && !(bool)ViewBag.CanDelete)
+{
+    <div class="alert alert-warning">
+        This plan cannot be deleted because it is currently used by users.
+    </div>
+}
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="PlanId" />
+
+    <button type="submit"
+            class="btn btn-danger"
+    @(ViewBag.CanDelete != null && !(bool)ViewBag.CanDelete ? "disabled" : "")>
+        Delete
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
