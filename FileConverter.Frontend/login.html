@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FileConverter - Login</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          keyframes: {
+            floaty: { "0%,100%": { transform: "translateY(0px)" }, "50%": { transform: "translateY(-10px)" } },
+            shimmer: { "0%": { transform: "translateX(-120%)" }, "100%": { transform: "translateX(120%)" } },
+            bgmove: { "0%": { backgroundPosition: "0% 50%" }, "50%": { backgroundPosition: "100% 50%" }, "100%": { backgroundPosition: "0% 50%" } },
+            flicker: { "0%,100%": { opacity: 1 }, "40%": { opacity: .86 }, "60%": { opacity: 1 }, "70%": { opacity: .92 } }
+          },
+          animation: {
+            floaty: "floaty 5s ease-in-out infinite",
+            shimmer: "shimmer 1.6s ease-in-out infinite",
+            bgmove: "bgmove 10s ease-in-out infinite",
+            flicker: "flicker 3.2s ease-in-out infinite",
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .noise {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* Stronger neon glow */
+    .neon-glow {
+      text-shadow:
+        0 0 10px rgba(34, 211, 238, .38),
+        0 0 22px rgba(99, 102, 241, .38),
+        0 0 40px rgba(217, 70, 239, .24);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-slate-100 overflow-hidden">
+  <!-- Background -->
+  <div class="fixed inset-0 -z-10">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 bg-[length:200%_200%] animate-bgmove"></div>
+
+    <div class="absolute -top-28 -left-28 h-72 w-72 rounded-full bg-indigo-500/25 blur-3xl animate-floaty"></div>
+    <div class="absolute top-1/3 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl animate-floaty" style="animation-delay: -1.6s;"></div>
+    <div class="absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-cyan-500/15 blur-3xl animate-floaty" style="animation-delay: -3.1s;"></div>
+
+    <div class="absolute inset-0 noise opacity-40"></div>
+  </div>
+
+  <div class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-md">
+      <!-- Header -->
+      <div class="text-center mb-7">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.8)]"></span>
+          Demo • PDF → Word Converter
+        </div>
+
+        <!-- Neon title (File + Converter) -->
+        <h1 class="mt-4 text-3xl font-extrabold tracking-tight neon-glow animate-flicker">
+          <span class="bg-gradient-to-r from-cyan-200 via-indigo-200 to-fuchsia-200 bg-clip-text text-transparent">
+            FileConverter
+          </span>
+        </h1>
+
+        <p class="mt-2 text-slate-300">Log in to access conversions & plans</p>
+      </div>
+
+      <!-- Card -->
+      <div class="relative rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
+        <div class="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10"></div>
+
+        <div id="msg" class="hidden mb-4 rounded-xl px-4 py-3 text-sm border"></div>
+
+        <div class="space-y-4">
+          <div class="group">
+            <label for="email" class="block text-sm font-medium text-slate-200 mb-1">Email</label>
+            <div class="relative">
+              <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/>
+                </svg>
+              </span>
+              <input id="email" type="email" placeholder="you@example.com"
+                class="w-full rounded-xl border border-white/10 bg-slate-950/40 pl-11 pr-3 py-2.5
+                       text-slate-100 placeholder:text-slate-500 outline-none
+                       focus:ring-2 focus:ring-indigo-500/70 focus:border-indigo-400/60
+                       transition group-hover:border-white/20" />
+            </div>
+          </div>
+
+          <div class="group">
+            <label for="password" class="block text-sm font-medium text-slate-200 mb-1">Password</label>
+            <div class="relative">
+              <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 17v.01"/><path d="M17 8V7a5 5 0 0 0-10 0v1"/>
+                  <rect x="5" y="8" width="14" height="14" rx="2"/>
+                </svg>
+              </span>
+
+              <input id="password" type="password" placeholder="••••••••"
+                class="w-full rounded-xl border border-white/10 bg-slate-950/40 pl-11 pr-12 py-2.5
+                       text-slate-100 placeholder:text-slate-500 outline-none
+                       focus:ring-2 focus:ring-indigo-500/70 focus:border-indigo-400/60
+                       transition group-hover:border-white/20" />
+
+              <button type="button" id="togglePw"
+                class="absolute inset-y-0 right-2 my-auto h-9 px-3 rounded-lg
+                       text-xs font-semibold text-slate-200/90 hover:text-white
+                       hover:bg-white/5 transition">
+                Show
+              </button>
+            </div>
+
+            <div class="mt-2 flex items-center justify-between text-xs text-slate-400">
+              <span id="capsHint" class="hidden text-amber-300">Caps Lock is ON</span>
+              <button type="button" class="hover:text-slate-200 transition">Forgot password?</button>
+            </div>
+          </div>
+
+          <button id="loginBtn" onclick="login()"
+            class="relative w-full overflow-hidden rounded-xl bg-indigo-500/90 px-4 py-2.5
+                   font-semibold text-white shadow-[0_10px_30px_-10px_rgba(99,102,241,0.8)]
+                   hover:bg-indigo-400 transition active:scale-[0.99]">
+            <span class="relative z-10 inline-flex items-center justify-center gap-2">
+              <span id="loginText">Login</span>
+              <span id="loginSpinner" class="hidden h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></span>
+            </span>
+            <span class="pointer-events-none absolute inset-y-0 left-0 w-1/2 -skew-x-12 bg-white/20 blur-md animate-shimmer"></span>
+          </button>
+
+          <div class="flex items-center gap-3">
+            <div class="h-px bg-white/10 flex-1"></div>
+            <span class="text-xs text-slate-400">or</span>
+            <div class="h-px bg-white/10 flex-1"></div>
+          </div>
+
+          <button onclick="registerUser()"
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5
+                   font-semibold text-slate-100 hover:bg-white/10 transition active:scale-[0.99]">
+            Create account
+          </button>
+        </div>
+
+        <p class="mt-5 text-center text-xs text-slate-400">
+          By continuing, you agree to the demo terms for this project.
+        </p>
+      </div>
+
+      <p class="mt-6 text-center text-xs text-slate-400">
+        Tip: press <span class="rounded bg-white/10 px-1.5 py-0.5">Enter</span> to login.
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <script>
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") login();
+    });
+
+    const pw = document.getElementById("password");
+    const togglePw = document.getElementById("togglePw");
+    togglePw.addEventListener("click", () => {
+      const isHidden = pw.type === "password";
+      pw.type = isHidden ? "text" : "password";
+      togglePw.textContent = isHidden ? "Hide" : "Show";
+    });
+
+    const capsHint = document.getElementById("capsHint");
+    document.addEventListener("keydown", (e) => {
+      if (e.getModifierState && e.getModifierState("CapsLock")) capsHint.classList.remove("hidden");
+      else capsHint.classList.add("hidden");
+    });
+
+    function showMsg(text, type = "error") {
+      const box = document.getElementById("msg");
+      box.classList.remove("hidden");
+      box.textContent = text;
+
+      box.className = "mb-4 rounded-xl px-4 py-3 text-sm border";
+      if (type === "success") box.classList.add("bg-emerald-500/10", "border-emerald-400/20", "text-emerald-200");
+      else if (type === "info") box.classList.add("bg-sky-500/10", "border-sky-400/20", "text-sky-200");
+      else box.classList.add("bg-rose-500/10", "border-rose-400/20", "text-rose-200");
+    }
+
+    const loginBtn = document.getElementById("loginBtn");
+    const loginText = document.getElementById("loginText");
+    const loginSpinner = document.getElementById("loginSpinner");
+
+    const _originalLogin = window.login;
+    if (typeof _originalLogin === "function") {
+      window.login = async function () {
+        loginBtn.disabled = true;
+        loginBtn.classList.add("opacity-90", "cursor-not-allowed");
+        loginSpinner.classList.remove("hidden");
+        loginText.textContent = "Signing in...";
+
+        try {
+          const result = _originalLogin();
+          if (result && typeof result.then === "function") await result;
+        } catch (err) {
+          showMsg(err?.message || "Login failed. Try again.", "error");
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.classList.remove("opacity-90", "cursor-not-allowed");
+          loginSpinner.classList.add("hidden");
+          loginText.textContent = "Login";
+        }
+      };
+    }
+  </script>
+</body>
+</html>

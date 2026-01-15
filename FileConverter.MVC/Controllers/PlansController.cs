@@ -1,10 +1,12 @@
 ﻿using FileConverter.BLL.DTOs.Plans;
 using FileConverter.BLL.Services.Interfaces;
 using FileConverter.MVC.Models.Plans;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileConverter.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PlansController : Controller
     {
         private readonly IPlanService _planService;
@@ -34,30 +36,6 @@ namespace FileConverter.MVC.Controllers
             return View(viewModels);
         }
 
-        // GET: Plans/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            var plan = await _planService.GetByIdAsync(id.Value);
-            if (plan == null)
-                return NotFound();
-
-            var viewModel = new PlanModel
-            {
-                PlanId = plan.PlanId,
-                Name = plan.Name,
-                Description = plan.Description,
-                MonthlyPrice = plan.MonthlyPrice,
-                MaxConversionPerMonth = plan.MaxConversionPerMonth,
-                MaxUploadBytes = plan.MaxUploadBytes,
-                IsActive = plan.IsActive,
-                CreatedAt = plan.CreatedAt
-            };
-
-            return View(viewModel);
-        }
 
         // GET: Plans/Create
         public IActionResult Create()
@@ -182,22 +160,23 @@ namespace FileConverter.MVC.Controllers
             return View(viewModel);
         }
 
-        // POST: Plans/DeleteConfirmed/5
-        [HttpPost, ActionName("DeleteConfirmed")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            try
-            {
-                await _planService.DeleteAsync(id);
-                TempData["SuccessMessage"] = "Planul a fost șters cu succes!";
-            }
-            catch (InvalidOperationException ex)
-            {
-                TempData["ErrorMessage"] = ex.Message;
-            }
+		// POST: Plans/DeleteConfirmed/5
+		[HttpPost, ActionName("DeleteConfirmed")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(Guid planId)
+		{
+			try
+			{
+				await _planService.DeleteAsync(planId);
+				TempData["SuccessMessage"] = "Planul a fost șters cu succes!";
+			}
+			catch (InvalidOperationException ex)
+			{
+				TempData["ErrorMessage"] = ex.Message;
+			}
 
-            return RedirectToAction(nameof(Index));
-        }
-    }
+			return RedirectToAction(nameof(Index));
+		}
+
+	}
 }
