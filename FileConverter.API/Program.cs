@@ -94,6 +94,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IConversionService, ConversionService>();
+builder.Services.AddScoped<IConversionService, ConversionService>();
+
 
 //Frontend CORS
 builder.Services.AddCors(options =>
